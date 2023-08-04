@@ -13,6 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+<<<<<<< HEAD
+=======
+    "csv-parse": "^5.4.0",
+>>>>>>> c3d12c47129c2c1edf2bd9105eed9cae6528efa6
     "express": "^4.18.2"
   },
   "devDependencies": {
