@@ -1,5 +1,7 @@
 const launches = new Map();
 
+let latestFlighNumber = 100;
+
 
 const launch = {
     flightNumber:100,
@@ -14,6 +16,24 @@ const launch = {
 
 launches.set(launch.flightNumber,launch);
 
+function getAllLaunches() {
+    return Array.from(launches.values());
+}
+
+function addNewLaunch(launch) {
+    latestFlighNumber++;
+    launches.set(latestFlighNumber,
+         Object.assign(launch, {
+            success: true,
+            customers: ['ZTM',"NASA"],
+            upcoming: true,
+            flightNumber: latestFlighNumber
+
+    })
+    );
+}
+
 module.exports = {
-    launches,
+    getAllLaunches,
+    addNewLaunch,
 }
