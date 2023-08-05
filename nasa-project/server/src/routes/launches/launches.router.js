@@ -1,4 +1,7 @@
-const {launches} = require('../../models/launches.model');
+const express = require('express');
+const { 
+    getAllLaunches, 
+} = require('./launches.controller');
 
 const launchesRouter = express.Router();
 

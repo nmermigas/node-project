@@ -19,7 +19,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname,'..','public')))
 app.use(planetsRouter);
 app.use(launchesRouter);
-app.get('/',(req,res) => {
+
+// it passes it through to react to handle routes (/*) , so everything that is not handled in express
+app.get('/*',(req,res) => {
   res.sendFile(path.join(__dirname,'..','public','index.html'))
 })
 module.exports = app;
