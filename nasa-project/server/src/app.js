@@ -17,8 +17,8 @@ app.use(morgan('combined'))
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname,'..','public')))
-app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/planets', planetsRouter);
+app.use('/launches', launchesRouter);
 
 // it passes it through to react to handle routes (/*) , so everything that is not handled in express
 app.get('/*',(req,res) => {
