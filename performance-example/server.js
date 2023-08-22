@@ -1,6 +1,5 @@
 const express = require('express');
-const cluster = require('cluster');
-const { Server } = require('http');
+
 
 //The workers run the same code as the server.js
 
@@ -27,11 +26,6 @@ app.get('/timer', (req,res) =>{
 
 console.log('Running Server.js...');
 //only as the master process is started
-if (cluster.isMaster) {
-    console.log("Master has been started");
-    cluster.fork(); // we create a worker
-    cluster.fork();
-} else {
-    console.log("Worker process has been started");
-    app.listen(3000);
-}
+console.log("Worker process has been started");
+app.listen(3001);
+
