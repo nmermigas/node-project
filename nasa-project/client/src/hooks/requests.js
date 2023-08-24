@@ -47,4 +47,9 @@ async function httpAbortLaunch(id) {
   // Delete launch with given ID.
 }
 
-export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };
+module.exports = {
+  httpGetPlanets,
+  httpGetLaunches,
+  httpSubmitLaunch,
+  httpAbortLaunch,
+};
