@@ -1,7 +1,8 @@
-// const launches = require("./launches.mongo");
-const launches = new Map();
+const launchesDatabase = require("./launches.mongo");
+const planets = require("./planets.mongo");
 
-let latestFlighNumber = 100;
+const launches = new Map();
+const DEAFULT_FLIGHT_NUMBER = 100;
 
 const launch = {
   flightNumber: 100,
@@ -14,39 +15,75 @@ const launch = {
   success: true,
 };
 
-launches.set(launch.flightNumber, launch);
+saveLaunch(launch);
 
-function existsLaunchWithId(launchId) {
-  return launches.has(launchId);
+async function existsLaunchWithId(launchId) {
+  return await launchesDatabase.findOne({ flightNumber: launchId });
 }
 
-function getAllLaunches() {
-  return Array.from(launches.values());
+async function getLatestFlightNumber() {
+  const latestLaunch = await launchesDatabase.findOne().sort("-flightNumber"); // - because we want descending order
+  if (!latestLaunch) {
+    return DEAFULT_FLIGHT_NUMBER;
+  }
+  return latestLaunch.flightNumber;
 }
 
-function addNewLaunch(launch) {
-  latestFlighNumber++;
-  launches.set(
-    latestFlighNumber,
-    Object.assign(launch, {
-      success: true,
-      customers: ["ZTM", "NASA"],
-      upcoming: true,
-      flightNumber: latestFlighNumber,
-    })
+async function getAllLaunches() {
+  return await launchesDatabase.find({}, { _id: 0, __v: 0 });
+}
+
+async function saveLaunch(launch) {
+  const planet = await planets.findOne({
+    keplerName: launch.target,
+  });
+
+  if (!planet) {
+    throw new Error("No matching planet found");
+  }
+
+  await launchesDatabase.findOneAndUpdate(
+    // it will only return the properties we set
+    {
+      flightNumber: launch.flightNumber, //acts as a filter, eg. if the flighNumbers match, then it will just update (upsert). else, it will create a new launch object
+    },
+    launch,
+    {
+      upsert: true,
+    }
   );
 }
 
-function abortLaunchById(launchId) {
-  const aborted = launch.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
-  return aborted;
+// function to add some default properties when creating a new launch
+async function scheduleNewLaunch(launch) {
+  const newFlightNumber = (await getLatestFlightNumber()) + 1;
+  const newLaunch = Object.assign(launch, {
+    success: true,
+    upcoming: true,
+    customers: ["ZTM", "NASA"],
+    flightNumber: newFlightNumber,
+  });
+
+  await saveLaunch(newLaunch);
+}
+
+async function abortLaunchById(launchId) {
+  const aborted = await launchesDatabase.updateOne(
+    {
+      flightNumber: launchId,
+    },
+    {
+      upcoming: false,
+      success: false,
+    }
+  );
+
+  return aborted.modifiedCount === 1;
 }
 
 module.exports = {
   existsLaunchWithId,
   getAllLaunches,
-  addNewLaunch,
+  scheduleNewLaunch,
   abortLaunchById,
 };
