@@ -1,6 +1,7 @@
 
 # NASA Mission Control System 🚀🌌
 
+Note: The README needs to be updated to correspond to the latest  changes in the codebase. It is currently in progress...
 
 ## Overview
 
