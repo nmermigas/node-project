@@ -9,8 +9,8 @@ The NASA Mission Control System is a Node.js and MongoDB-based application that 
 ### Key Features
 
 - Schedule and launch space missions.
-- Fetch real-time data from the SpaceX API for the latest flight and launch information.
-- Track historical missions and perform in-depth data analysis.
+- Fetch latest data from the SpaceX API for the latest flight and launch information.
+- Track historical missions.
 - Efficiently manage missions, including deletion and status marking.
 - Optimize application performance using PM2 process management.
 - Implement pagination for seamless data retrieval.
@@ -21,8 +21,6 @@ The NASA Mission Control System is a Node.js and MongoDB-based application that 
 - MongoDB: Efficient data storage and retrieval.
 - Front-end Integration: Seamlessly integrated front-end with the backend API.
 - PM2: Improved application performance and minimized API load.
-- PowerBI: Leveraged interactive visualizations to reveal insights and trends.
-- Data Mining: Utilized techniques to identify patterns and make predictions.
 
 ## Getting Started
 
@@ -124,21 +122,12 @@ The NASA Mission Control System is a Node.js and MongoDB-based application that 
 
 4. Dive into historical mission data for research and analysis.
 
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to this project, please follow the contribution guidelines outlined in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Acknowledgments
 
-- Special thanks to the SpaceX API for providing real-time data.
+- Special thanks to the SpaceX API for providing free data on the launches.
 
 ## Contact
 
-For inquiries and feedback, please contact [Your Name](mailto:your.email@example.com).
+For inquiries and feedback, please contact [Your Name](mailto:nikosmermigas01@gmail.com).
 ```
 
-You can copy and paste this Markdown text directly into your repository's README.md file. Ensure that you replace `"your-username"` and `"Your Name"` with your actual GitHub username and name, respectively.
