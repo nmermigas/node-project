@@ -1,9 +1,6 @@
-Certainly, here's the complete README.md with all the instructions in a single Markdown file:
 
-```markdown
-# NASA Mission Control System
+# NASA Mission Control System 🚀🌌
 
-![Project Image](project-image-url.png)
 
 ## Overview
 
