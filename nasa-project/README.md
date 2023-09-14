@@ -129,6 +129,6 @@ The NASA Mission Control System is a Node.js and MongoDB-based application that 
 
 ## Contact
 
-For inquiries and feedback, please contact [Your Name](mailto:nikosmermigas01@gmail.com).
+For inquiries and feedback, please contact [me through my email](mailto:nikosmermigas01@gmail.com).
 ```
 
