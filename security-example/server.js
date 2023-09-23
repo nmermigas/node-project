@@ -5,6 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
+const cookieSession = require("cookie-session");
 
 require("dotenv").config();
 
@@ -13,34 +14,58 @@ const PORT = 3000;
 const config = {
   CLIENT_ID: process.env.CLIENT_ID,
   CLIENT_SECRET: process.env.CLIENT_SECRET,
+  COOKIE_KEY_1: process.env.COOKIE_KEY_1,
+  COOKIE_KEY_2: process.env.COOKIE_KEY_2,
 };
 
 const AUTH_OPTIONS = {
-  callbackURL: "/auth/google/auth",
+  callbackURL: "/auth/google/callback",
   clientID: config.CLIENT_ID,
   clientSecret: config.CLIENT_SECRET,
 };
 
-// checks if the access token and refresh token are valid
 function verifyCallback(accessToken, refreshToken, profile, done) {
   console.log("Google profile", profile);
   done(null, profile);
 }
 
-//setting the passport strategy
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
+
+//save the session to the cookie
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// read the session from the cookie
+passport.deserializeUser((id, done) => {
+  //might do some datrabase lookups like:
+
+  done(null, id);
+});
 
 const app = express();
 
-// security related middleware usually goes at the top
 app.use(helmet());
 
+app.use(
+  cookieSession({
+    name: "session",
+    maxAge: 1000 * 60 * 60 * 24, //one day duration
+    keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2], //array since we might need to change it
+  })
+);
+
 app.use(passport.initialize());
+app.use(passport.session());
 
 function checkLoggedIn(req, res, next) {
-  const isLoggedIn = true; //TODO
+  //req.user
+  console.log("Current user is:", req.user);
+  const isLoggedIn = req.isAuthenticated() && req.user;
   if (!isLoggedIn) {
-    return res.status(401).json({ error: "Must log in!" });
+    return res.status(401).json({
+      error: "You must log in!",
+    });
   }
   next();
 }
@@ -48,7 +73,7 @@ function checkLoggedIn(req, res, next) {
 app.get(
   "/auth/google",
   passport.authenticate("google", {
-    scope: ["email"], //the data that we need
+    scope: ["email"],
   })
 );
 
@@ -57,18 +82,20 @@ app.get(
   passport.authenticate("google", {
     failureRedirect: "/failure",
     successRedirect: "/",
-    session: false,
+    session: true,
   }),
   (req, res) => {
     console.log("Google called us back!");
   }
 );
 
-app.get("/auth/logout", (req, res) => {});
+app.get("/auth/logout", (req, res) => {
+  req.logout(); //Removes req.user and clears any logged in session
+  return res.redirect("/");
+});
 
-// we pass in middleware when defining the route. (we can add how many we want and they will run sequently)
 app.get("/secret", checkLoggedIn, (req, res) => {
-  return res.send("Your personal secret is 42!");
+  return res.send("Your personal secret value is 42!");
 });
 
 app.get("/failure", (req, res) => {
