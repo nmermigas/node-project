@@ -38,7 +38,7 @@ passport.serializeUser((user, done) => {
 
 // read the session from the cookie
 passport.deserializeUser((id, done) => {
-  //might do some datrabase lookups like:
+  //might do some datrabase lookups like: findById and retrieve some other user info like access or email etc...
 
   done(null, id);
 });
@@ -60,8 +60,8 @@ app.use(passport.session());
 
 function checkLoggedIn(req, res, next) {
   //req.user
-  console.log("Current user is:", req.user);
-  const isLoggedIn = req.isAuthenticated() && req.user;
+  console.log(`Current user is: ${req.user}`);
+  const isLoggedIn = req.isAuthenticated() && req.user; //extra security
   if (!isLoggedIn) {
     return res.status(401).json({
       error: "You must log in!",
