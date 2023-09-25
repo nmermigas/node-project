@@ -66,7 +66,7 @@ async function savePlanet(planet) {
         keplerName: data.kepler_name,
       },
       {
-        keplreName: data.kepler_name,
+        keplerName: data.kepler_name,
       },
       {
         upsert: true,
