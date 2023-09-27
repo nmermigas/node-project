@@ -1,0 +1,6 @@
+# to prevent errors in copying the modules and fresh intalling them for each operating system (in our case linux alpine)
+*/node_modules
+
+.git
+
+server/public
