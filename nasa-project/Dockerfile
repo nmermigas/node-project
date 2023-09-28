@@ -7,12 +7,12 @@ WORKDIR /app
 COPY package*.json ./
 
 COPY client/package*.json client/
-RUN npm install-client --omit=dev
+RUN npm run install-client --omit=dev
 # only install the dependencies for production
 
 #we split the installations to be cached easier aka to save the state of the installation
 COPY server/package*.json server/
-RUN npm install-server --omit=dev
+RUN npm run install-server --omit=dev
 
 
 # build the client 
